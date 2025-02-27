@@ -59,7 +59,9 @@ fn run_test(
 
     // send a packet we expect to make it through
     phy1.send(&[TxFrame::newv(m2, 0x8100, b"blueberry", 47)])?;
+    println!("dbg vlan-switch.rs just before expect_frames");
     expect_frames!(phy2, &[RxFrame::newv(phy1.mac, 0x8100, b"blueberry", 47)]);
+    println!("dbg vlan-switch.rs just after expect_frames");
 
     // send 3 packets, we expect the first 2 to get filtered by vlan rules
     phy1.send(&[TxFrame::newv(m2, 0x8100, b"poppyseed", 74)])?; // 74 != 47

@@ -17,14 +17,19 @@ pub fn do_expect_frames(
     let n = expected.len();
     let mut frames = Vec::new();
     loop {
+	println!("dbg do_expect_frames got here #1 before phy.recv");
         let fs = phy.recv();
+	println!("dbg do_expect_frames got here #2 after phy.recv");
         frames.extend_from_slice(&fs);
+	println!("dbg do_expect_frames got here #3");
         // TODO this is not a great interface, if frames.len() > n, we should do
         // something besides hang forever.
         if frames.len() == n {
+	    println!("dbg do_expect_frames got here #4");
             break;
         }
     }
+    println!("dbg do_expect_frames got here #5");
     for i in 0..n {
         let payload = match frames[i].ethertype {
             0x0901 => {
@@ -153,6 +158,7 @@ impl<P: p4rs::Pipeline + 'static> SoftNpu<P> {
                         //
                         // get frame for packet
                         //
+			println!("dbg softnpu.rs do_run out_port={:#?}", out_port);
 
                         let phy = &inner_phys[out_port];
                         let eg = &phy.tx_p;
